@@ -44,8 +44,8 @@ public class ActionServiceImp implements ActionService {
         ActionHandler handler = handlerMap.get(action);
 
         if (handler == null) {
-            logger.error("AmiActionHandler for Action: " + action + " not found.");
-            throw new UnsupportedOperationException("AmiActionHandler for Action: " + action + " not found.");
+            logger.error("ActionHandler for Action: " + action + " not found.");
+            throw new UnsupportedOperationException("ActionHandler for Action: " + action + " not found.");
         }
 
         return handler;

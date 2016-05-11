@@ -10,6 +10,20 @@ import com.tinet.ctilink.control.entity.ActionResponse;
 public class ControlUtil {
 
     public static ActionResponse toActionResponse(AmiActionResponse response) {
+        if (response == null) {
+            return null;
+        }
+        ActionResponse actionResponse = new ActionResponse();
+        actionResponse.setCode(response.getCode());
+        actionResponse.setMsg(response.getMsg());
+        actionResponse.setValues(response.getValues());
+        return actionResponse;
+    }
+
+    public static ActionResponse toActionResponse(com.tinet.ctilink.bigqueue.entity.ActionResponse response) {
+        if (response == null) {
+            return null;
+        }
         ActionResponse actionResponse = new ActionResponse();
         actionResponse.setCode(response.getCode());
         actionResponse.setMsg(response.getMsg());

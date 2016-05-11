@@ -19,8 +19,10 @@
 	<context:component-scan base-package="com.tinet.ctilink">
 		<context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service" />
 	</context:component-scan>
-	
+
+	<!-- ami -->
 	<dubbo:reference id="amiActionService" interface="com.tinet.ctilink.ami.action.AmiActionService"/>
-	<dubbo:reference id="queueMonitorService" interface="com.tinet.ctilink.ami.queuemonitor.QueueMonitorService" />
-	<dubbo:reference id="ivrMonitorService" interface="com.tinet.ctilink.ami.ivrmonitor.IvrMonitorService" />
+
+	<!-- bigqueue -->
+	<dubbo:reference id="agentService" interface="com.tinet.ctilink.bigqueue.service.v1.AgentService" />
 </beans>

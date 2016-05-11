@@ -1,7 +1,5 @@
 package com.tinet.ctilink.control.action;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.tinet.ctilink.ami.action.AmiActionService;
 import com.tinet.ctilink.control.entity.ActionResponse;
 
 import java.util.Map;
