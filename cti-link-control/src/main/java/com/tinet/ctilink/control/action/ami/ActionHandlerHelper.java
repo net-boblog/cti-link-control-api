@@ -13,6 +13,7 @@ import com.tinet.ctilink.control.entity.Action;
 import com.tinet.ctilink.control.entity.ActionResponse;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
+import com.tinet.ctilink.util.SipMediaServerUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class ActionHandlerHelper {
             actionResponse.setMsg("invalid enterpriseId");
             return null;
         }
-        SipMediaServer sipMediaServer;
+        SipMediaServer sipMediaServer = null;
         if (action.equals(Action.PREVIEW_OUTCALL)
                 || action.equals(Action.WEBCALL)
                 || action.equals(Action.SELF_RECORD)
@@ -98,12 +99,23 @@ public class ActionHandlerHelper {
                 //Sip-111-xxxxxxx
                 String uniqueId = callAgent.getCurrentChannelUniqueId();
                 if (StringUtils.isEmpty(uniqueId)) {
-                    actionResponse.setMsg("channelUniqueId not exist");
+                    actionResponse.setMsg("channel uniqueId not exist");
                     return null;
                 }
-                Integer sipMediaServerId = Integer.parseInt(uniqueId.split("-")[1]);
-                sipMediaServer = redisService.get(Const.REDIS_DB_CONF_INDEX, String.format(CacheKey.SIP_MEDIA_SERVER_ID
-                        , sipMediaServerId), SipMediaServer.class);
+                Integer sipId = SipMediaServerUtil.getSipId(uniqueId);
+                if (sipId == null) {
+                    actionResponse.setMsg("channel uniqueId invalid");
+                    return null;
+                }
+
+                List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
+                        , CacheKey.SIP_MEDIA_SERVER, SipMediaServer.class);
+                for (SipMediaServer server : sipMediaServerList) {
+                    if (sipId.equals(server.getSipId())) {
+                        sipMediaServer = server;
+                        break;
+                    }
+                }
             } catch (Exception e) {
                 actionResponse.setMsg("invalid channel uniqueId");
                 logger.error("ActionHandlerHelper get sipMeidiaServerId error, ", e);
