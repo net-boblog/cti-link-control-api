@@ -10,6 +10,11 @@ public class ActionRequest {
     private String action;
     private Map<String, String> params;
 
+    public ActionRequest(String action, Map<String, String> params) {
+        this.action = action;
+        this.params = params;
+    }
+
     public String getAction() {
         return action;
     }
