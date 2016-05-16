@@ -44,8 +44,8 @@ public class ActionServiceImp implements ActionService {
         ActionHandler handler = handlerMap.get(action);
 
         if (handler == null) {
-            logger.error("ActionHandler for Action: " + action + " not found.");
-            throw new UnsupportedOperationException("ActionHandler for Action: " + action + " not found.");
+            logger.error("ActionHandler for AmiAction: " + action + " not found.");
+            throw new UnsupportedOperationException("ActionHandler for AmiAction: " + action + " not found.");
         }
 
         return handler;
@@ -53,7 +53,7 @@ public class ActionServiceImp implements ActionService {
 
     @Override
     public ActionResponse handleAction(ActionRequest actionRequest) {
-        logger.debug("Action : {}", actionRequest);
+        logger.debug("AmiAction : {}", actionRequest);
 
         return this.getHandler(actionRequest.getAction()).handle(actionRequest.getParams());
     }

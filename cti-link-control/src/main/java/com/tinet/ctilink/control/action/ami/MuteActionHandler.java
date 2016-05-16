@@ -1,6 +1,6 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +12,6 @@ public class MuteActionHandler extends AbstractActionHandler {
 
     @Override
     public String getAction() {
-        return Action.MUTE;
+        return ActionConst.MUTE;
     }
 }

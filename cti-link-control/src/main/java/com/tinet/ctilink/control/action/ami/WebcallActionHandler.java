@@ -1,9 +1,7 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author fengwei //
@@ -14,6 +12,6 @@ public class WebcallActionHandler extends AbstractActionHandler {
 
     @Override
     public String getAction() {
-        return Action.WEBCALL;
+        return ActionConst.WEBCALL;
     }
 }

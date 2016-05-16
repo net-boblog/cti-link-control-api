@@ -1,9 +1,7 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author fengwei //
@@ -13,7 +11,7 @@ import java.util.Map;
 public class DirectCallStartActionHandler extends AbstractActionHandler {
     @Override
     public String getAction() {
-        return Action.DIRECT_CALL_START;
+        return ActionConst.DIRECT_CALL_START;
     }
 
 }
