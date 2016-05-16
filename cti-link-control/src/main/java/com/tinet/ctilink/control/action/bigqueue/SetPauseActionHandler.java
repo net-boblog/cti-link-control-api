@@ -1,7 +1,7 @@
 package com.tinet.ctilink.control.action.bigqueue;
 
 import com.tinet.ctilink.control.action.ActionHandler;
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import com.tinet.ctilink.control.entity.ActionResponse;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 public class SetPauseActionHandler  implements ActionHandler {
     @Override
     public String getAction() {
-        return Action.SET_PAUSE;
+        return ActionConst.SET_PAUSE;
     }
 
     @Override

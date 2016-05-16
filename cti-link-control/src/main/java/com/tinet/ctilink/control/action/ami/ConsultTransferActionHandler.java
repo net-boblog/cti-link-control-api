@@ -1,6 +1,6 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class ConsultTransferActionHandler extends AbstractActionHandler {
     @Override
     public String getAction() {
-        return Action.CONSULT_TRANSFER;
+        return ActionConst.CONSULT_TRANSFER;
     }
 
 }

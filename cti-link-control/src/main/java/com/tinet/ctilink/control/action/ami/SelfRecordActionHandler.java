@@ -1,9 +1,7 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author fengwei //
@@ -14,7 +12,7 @@ public class SelfRecordActionHandler extends AbstractActionHandler {
 
     @Override
     public String getAction() {
-        return Action.SELF_RECORD;
+        return ActionConst.SELF_RECORD;
     }
 
 }

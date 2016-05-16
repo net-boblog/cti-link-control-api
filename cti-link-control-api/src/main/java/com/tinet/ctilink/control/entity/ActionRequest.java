@@ -1,15 +1,19 @@
 package com.tinet.ctilink.control.entity;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * @author fengwei //
  * @date 16/4/25 15:47
  */
-public class ActionRequest {
+public class ActionRequest implements Serializable {
     private String action;
     private Map<String, String> params;
 
+    public ActionRequest () {
+
+    }
     public ActionRequest(String action, Map<String, String> params) {
         this.action = action;
         this.params = params;

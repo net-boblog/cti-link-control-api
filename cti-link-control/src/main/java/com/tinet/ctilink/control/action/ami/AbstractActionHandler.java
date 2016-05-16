@@ -3,7 +3,6 @@ package com.tinet.ctilink.control.action.ami;
 import com.tinet.ctilink.ami.action.AmiActionResponse;
 import com.tinet.ctilink.ami.action.AmiActionService;
 import com.tinet.ctilink.control.action.ActionHandler;
-import com.tinet.ctilink.control.entity.Action;
 import com.tinet.ctilink.control.entity.ActionResponse;
 import com.tinet.ctilink.control.util.ControlUtil;
 

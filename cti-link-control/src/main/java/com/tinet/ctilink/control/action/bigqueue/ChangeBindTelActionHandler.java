@@ -3,8 +3,7 @@ package com.tinet.ctilink.control.action.bigqueue;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.tinet.ctilink.bigqueue.service.v1.AgentService;
 import com.tinet.ctilink.control.action.ActionHandler;
-import com.tinet.ctilink.control.action.ami.AbstractActionHandler;
-import com.tinet.ctilink.control.entity.Action;
+import com.tinet.ctilink.control.entity.ActionConst;
 import com.tinet.ctilink.control.entity.ActionResponse;
 import com.tinet.ctilink.control.util.ControlUtil;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class ChangeBindTelActionHandler implements ActionHandler {
 
     @Override
     public String getAction() {
-        return Action.CHANGE_BIND_TEL;
+        return ActionConst.CHANGE_BIND_TEL;
     }
 
     @Override

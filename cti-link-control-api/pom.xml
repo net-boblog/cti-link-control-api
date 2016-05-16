@@ -27,6 +27,12 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-multipart-provider</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.tinet.ctilink</groupId>
+            <artifactId>cti-link-ami-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
 </project>
