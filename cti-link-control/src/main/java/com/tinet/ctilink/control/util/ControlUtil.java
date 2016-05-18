@@ -1,7 +1,7 @@
 package com.tinet.ctilink.control.util;
 
 import com.tinet.ctilink.ami.action.AmiActionResponse;
-import com.tinet.ctilink.control.entity.ActionResponse;
+import com.tinet.ctilink.control.entity.ControlActionResponse;
 
 /**
  * @author fengwei //
@@ -9,25 +9,14 @@ import com.tinet.ctilink.control.entity.ActionResponse;
  */
 public class ControlUtil {
 
-    public static ActionResponse toActionResponse(AmiActionResponse response) {
+    public static ControlActionResponse toActionResponse(AmiActionResponse response) {
         if (response == null) {
             return null;
         }
-        ActionResponse actionResponse = new ActionResponse();
-        actionResponse.setCode(response.getCode());
-        actionResponse.setMsg(response.getMsg());
-        actionResponse.setValues(response.getValues());
-        return actionResponse;
-    }
-
-    public static ActionResponse toActionResponse(com.tinet.ctilink.bigqueue.entity.ActionResponse response) {
-        if (response == null) {
-            return null;
-        }
-        ActionResponse actionResponse = new ActionResponse();
-        actionResponse.setCode(response.getCode());
-        actionResponse.setMsg(response.getMsg());
-        actionResponse.setValues(response.getValues());
-        return actionResponse;
+        ControlActionResponse controlActionResponse = new ControlActionResponse();
+        controlActionResponse.setCode(response.getCode());
+        controlActionResponse.setMsg(response.getMsg());
+        controlActionResponse.setValues(response.getValues());
+        return controlActionResponse;
     }
 }

@@ -1,6 +1,6 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.ActionConst;
+import com.tinet.ctilink.control.inc.ControlAction;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +12,6 @@ public class CallLocalActionHandler extends AbstractActionHandler {
 
     @Override
     public String getAction() {
-        return ActionConst.CALL_LOCAL;
+        return ControlAction.CALL_LOCAL;
     }
 }

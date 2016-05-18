@@ -7,14 +7,14 @@ import java.util.Map;
  * @author fengwei //
  * @date 16/4/25 15:47
  */
-public class ActionRequest implements Serializable {
+public class ControlActionRequest implements Serializable {
     private String action;
     private Map<String, String> params;
 
-    public ActionRequest () {
+    public ControlActionRequest() {
 
     }
-    public ActionRequest(String action, Map<String, String> params) {
+    public ControlActionRequest(String action, Map<String, String> params) {
         this.action = action;
         this.params = params;
     }

@@ -2,9 +2,9 @@ package com.tinet.ctilink.control.service.imp;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.tinet.ctilink.control.action.ActionHandler;
-import com.tinet.ctilink.control.entity.ActionRequest;
-import com.tinet.ctilink.control.entity.ActionResponse;
-import com.tinet.ctilink.control.service.v1.ActionService;
+import com.tinet.ctilink.control.entity.ControlActionRequest;
+import com.tinet.ctilink.control.entity.ControlActionResponse;
+import com.tinet.ctilink.control.service.v1.ControlActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ import java.util.Map;
  * @date 16/4/25 15:58
  */
 @Service
-public class ActionServiceImp implements ActionService {
-    private static Logger logger = LoggerFactory.getLogger(ActionServiceImp.class);
+public class ControlActionServiceImp implements ControlActionService {
+    private static Logger logger = LoggerFactory.getLogger(ControlActionServiceImp.class);
 
     private Map<String, ActionHandler> handlerMap;
 
@@ -52,9 +52,9 @@ public class ActionServiceImp implements ActionService {
     }
 
     @Override
-    public ActionResponse handleAction(ActionRequest actionRequest) {
-        logger.debug("AmiAction : {}", actionRequest);
+    public ControlActionResponse handleAction(ControlActionRequest controlActionRequest) {
+        logger.debug("AmiAction : {}", controlActionRequest);
 
-        return this.getHandler(actionRequest.getAction()).handle(actionRequest.getParams());
+        return this.getHandler(controlActionRequest.getAction()).handle(controlActionRequest.getParams());
     }
 }

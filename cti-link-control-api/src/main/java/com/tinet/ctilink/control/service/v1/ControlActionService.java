@@ -1,7 +1,7 @@
 package com.tinet.ctilink.control.service.v1;
 
-import com.tinet.ctilink.control.entity.ActionRequest;
-import com.tinet.ctilink.control.entity.ActionResponse;
+import com.tinet.ctilink.control.entity.ControlActionRequest;
+import com.tinet.ctilink.control.entity.ControlActionResponse;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,9 +16,9 @@ import javax.ws.rs.core.MediaType;
 @Path("v1/action")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ActionService {
+public interface ControlActionService {
 
     @POST
-    ActionResponse handleAction(ActionRequest actionRequest);
+    ControlActionResponse handleAction(ControlActionRequest controlActionRequest);
 
 }

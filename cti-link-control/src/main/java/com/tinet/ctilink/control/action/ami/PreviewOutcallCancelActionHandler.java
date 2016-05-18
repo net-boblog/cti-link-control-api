@@ -1,6 +1,6 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.ActionConst;
+import com.tinet.ctilink.control.inc.ControlAction;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +12,6 @@ public class PreviewOutcallCancelActionHandler extends AbstractActionHandler {
 
     @Override
     public String getAction() {
-        return ActionConst.PREVIEW_OUTCALL_CANCEL;
+        return ControlAction.PREVIEW_OUTCALL_CANCEL;
     }
 }
