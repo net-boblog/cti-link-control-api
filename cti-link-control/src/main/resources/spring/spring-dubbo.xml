@@ -23,6 +23,4 @@
 	<!-- ami -->
 	<dubbo:reference id="amiActionService" interface="com.tinet.ctilink.ami.action.AmiActionService"/>
 
-	<!-- bigqueue -->
-	<dubbo:reference id="agentService" interface="com.tinet.ctilink.bigqueue.service.v1.AgentService" />
 </beans>

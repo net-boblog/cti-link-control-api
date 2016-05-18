@@ -1,6 +1,6 @@
 package com.tinet.ctilink.control.action;
 
-import com.tinet.ctilink.control.entity.ActionResponse;
+import com.tinet.ctilink.control.entity.ControlActionResponse;
 
 import java.util.Map;
 
@@ -12,5 +12,5 @@ public interface ActionHandler {
 
     String getAction();
 
-    ActionResponse handle(Map<String, String> params);
+    ControlActionResponse handle(Map<String, String> params);
 }

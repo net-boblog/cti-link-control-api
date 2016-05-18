@@ -3,14 +3,13 @@ package com.tinet.ctilink.control.action.ami;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.tinet.ctilink.ami.action.AmiActionService;
-import com.tinet.ctilink.bigqueue.entity.CallAgent;
 import com.tinet.ctilink.cache.CacheKey;
 import com.tinet.ctilink.cache.RedisService;
 import com.tinet.ctilink.conf.model.SipGroup;
 import com.tinet.ctilink.conf.model.SipMediaServer;
 import com.tinet.ctilink.conf.model.Trunk;
-import com.tinet.ctilink.control.entity.ActionConst;
-import com.tinet.ctilink.control.entity.ActionResponse;
+import com.tinet.ctilink.control.inc.ControlAction;
+import com.tinet.ctilink.control.entity.ControlActionResponse;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
 import com.tinet.ctilink.util.SipMediaServerUtil;
@@ -36,7 +35,7 @@ public class ActionHandlerHelper {
     private static final Map<String, ReferenceConfig<AmiActionService>> services = new HashMap<>();
     private static final ApplicationConfig application = new ApplicationConfig("cti-link-control-client");
     private static final String APPLICATION_VERSION;  //版本
-    private static final int APPLICATION_TIME;  //超时时间
+    private static final int APPLICATION_TIMEOUT;  //超时时间
     private static RedisService redisService;
 
     static {
@@ -44,28 +43,28 @@ public class ActionHandlerHelper {
 
         APPLICATION_VERSION = "0.0.1";
 
-        APPLICATION_TIME = 60000;
+        APPLICATION_TIMEOUT = 5000;
     }
 
     //查询ami
     public static AmiActionService getService(String action, Map<String, String> params
-            , ActionResponse actionResponse) {
+            , ControlActionResponse controlActionResponse) {
         String enterpriseId = params.get("enterpriseId");
         String cno = params.get("cno");
         if (!StringUtils.isNumeric(enterpriseId)) {
-            actionResponse.setMsg("invalid enterpriseId");
+            controlActionResponse.setMsg("invalid enterpriseId");
             return null;
         }
         SipMediaServer sipMediaServer = null;
-        if (action.equals(ActionConst.PREVIEW_OUTCALL)
-                || action.equals(ActionConst.WEBCALL)
-                || action.equals(ActionConst.SELF_RECORD)
-                || action.equals(ActionConst.CALL_LOCAL)
-                || action.equals(ActionConst.DIRECT_CALL_START)) {  //不用区分哪个ami
+        if (action.equals(ControlAction.PREVIEW_OUTCALL)
+                || action.equals(ControlAction.WEBCALL)
+                || action.equals(ControlAction.SELF_RECORD)
+                || action.equals(ControlAction.CALL_LOCAL)
+                || action.equals(ControlAction.DIRECT_CALL_START)) {  //不用区分哪个ami
             Trunk trunk = redisService.get(Const.REDIS_DB_CONF_INDEX, String.format(CacheKey.TRUNK_ENTERPRISE_ID_FIRST
                     , Integer.parseInt(enterpriseId)), Trunk.class);
             if (trunk == null) {
-                actionResponse.setMsg("trunk first cache error");
+                controlActionResponse.setMsg("trunk first cache error");
                 return null;
             }
             List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
@@ -97,7 +96,7 @@ public class ActionHandlerHelper {
                 }
             }
             if (targetList.isEmpty()) {
-                actionResponse.setMsg("invalid sip group");
+                controlActionResponse.setMsg("invalid sip group");
                 return null;
             }
             //随机获取一个sipMediaServer
@@ -106,16 +105,17 @@ public class ActionHandlerHelper {
         } else {  //direct ip, 需要发到指定ami上, 根据channelUniqueId中的sipId确定
             //TODO
             try {
-                CallAgent callAgent = new CallAgent();
+                //CallAgent callAgent = new CallAgent();
                 //Sip-111-xxxxxxx
-                String uniqueId = callAgent.getCurrentChannelUniqueId();
+                //String uniqueId = callAgent.getCurrentChannelUniqueId();
+                String uniqueId = "xxx-1-xxx";
                 if (StringUtils.isEmpty(uniqueId)) {
-                    actionResponse.setMsg("channel uniqueId not exist");
+                    controlActionResponse.setMsg("channel uniqueId not exist");
                     return null;
                 }
                 Integer sipId = SipMediaServerUtil.getSipId(uniqueId);
                 if (sipId == null) {
-                    actionResponse.setMsg("channel uniqueId invalid");
+                    controlActionResponse.setMsg("channel uniqueId invalid");
                     return null;
                 }
 
@@ -128,7 +128,7 @@ public class ActionHandlerHelper {
                     }
                 }
             } catch (Exception e) {
-                actionResponse.setMsg("invalid channel uniqueId");
+                controlActionResponse.setMsg("invalid channel uniqueId");
                 logger.error("ActionHandlerHelper get sipMeidiaServerId error, ", e);
                 return null;
             }
@@ -140,7 +140,7 @@ public class ActionHandlerHelper {
             if (referenceConfig == null) {
                 referenceConfig = new ReferenceConfig<>();
                 referenceConfig.setApplication(application);
-                referenceConfig.setTimeout(APPLICATION_TIME);
+                referenceConfig.setTimeout(APPLICATION_TIMEOUT);
                 referenceConfig.setInterface(AmiActionService.class);
                 referenceConfig.setUrl("dubbo://" + sipMediaServer.getIpAddr() + "/com.tinet.ctilnk.ami.action.AmiActionService");
                 referenceConfig.setVersion(APPLICATION_VERSION);

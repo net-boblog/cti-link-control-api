@@ -1,6 +1,6 @@
 package com.tinet.ctilink.control.action.ami;
 
-import com.tinet.ctilink.control.entity.ActionConst;
+import com.tinet.ctilink.control.inc.ControlAction;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 public class ChannelHangupActionHandler extends AbstractActionHandler {
     @Override
     public String getAction() {
-        return ActionConst.CHANNEL_HANGUP;
+        return ControlAction.CHANNEL_HANGUP;
     }
 }
