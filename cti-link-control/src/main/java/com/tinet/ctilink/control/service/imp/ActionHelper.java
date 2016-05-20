@@ -1,14 +1,14 @@
-package com.tinet.ctilink.control.action.ami;
+package com.tinet.ctilink.control.service.imp;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
+import com.tinet.ctilink.ami.action.AmiActionResponse;
 import com.tinet.ctilink.ami.action.AmiActionService;
 import com.tinet.ctilink.cache.CacheKey;
 import com.tinet.ctilink.cache.RedisService;
 import com.tinet.ctilink.conf.model.SipGroup;
 import com.tinet.ctilink.conf.model.SipMediaServer;
 import com.tinet.ctilink.conf.model.Trunk;
-import com.tinet.ctilink.control.entity.ControlActionResponse;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
 import com.tinet.ctilink.util.SipMediaServerUtil;
@@ -29,8 +29,8 @@ import java.util.Map;
  * 查询AmiActionService接口
  */
 
-public class ActionHandlerHelper {
-    private static Logger logger = LoggerFactory.getLogger(ActionHandlerHelper.class);
+public class ActionHelper {
+    private static Logger logger = LoggerFactory.getLogger(ActionHelper.class);
     private static final Map<String, ReferenceConfig<AmiActionService>> services = new HashMap<>();
     private static final ApplicationConfig application = new ApplicationConfig("cti-link-control-client");
     private static final String APPLICATION_VERSION;  //版本
@@ -46,12 +46,12 @@ public class ActionHandlerHelper {
     }
 
     //查询ami
-    public static AmiActionService getService(String action, Map<String, String> params
-            , ControlActionResponse controlActionResponse) {
-        String enterpriseId = params.get("enterpriseId");
-        String cno = params.get("cno");
+    public static AmiActionService getService(String action, Map<String, Object> params
+            , AmiActionResponse amiActionResponse) {
+        String enterpriseId = params.get("enterpriseId").toString();
+        String cno = params.get("cno").toString();
         if (!StringUtils.isNumeric(enterpriseId)) {
-            controlActionResponse.setMsg("invalid enterpriseId");
+            amiActionResponse.setMsg("invalid enterpriseId");
             return null;
         }
         SipMediaServer sipMediaServer = null;
@@ -59,7 +59,7 @@ public class ActionHandlerHelper {
             Trunk trunk = redisService.get(Const.REDIS_DB_CONF_INDEX, String.format(CacheKey.TRUNK_ENTERPRISE_ID_FIRST
                     , Integer.parseInt(enterpriseId)), Trunk.class);
             if (trunk == null) {
-                controlActionResponse.setMsg("trunk first cache error");
+                amiActionResponse.setMsg("trunk first cache error");
                 return null;
             }
             List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
@@ -91,7 +91,7 @@ public class ActionHandlerHelper {
                 }
             }
             if (targetList.isEmpty()) {
-                controlActionResponse.setMsg("invalid sip group");
+                amiActionResponse.setMsg("invalid sip group");
                 return null;
             }
             //随机获取一个sipMediaServer
@@ -105,12 +105,12 @@ public class ActionHandlerHelper {
                 //String uniqueId = callAgent.getCurrentChannelUniqueId();
                 String uniqueId = "xxx-1-xxx";
                 if (StringUtils.isEmpty(uniqueId)) {
-                    controlActionResponse.setMsg("channel uniqueId not exist");
+                    amiActionResponse.setMsg("channel uniqueId not exist");
                     return null;
                 }
                 Integer sipId = SipMediaServerUtil.getSipId(uniqueId);
                 if (sipId == null) {
-                    controlActionResponse.setMsg("channel uniqueId invalid");
+                    amiActionResponse.setMsg("channel uniqueId invalid");
                     return null;
                 }
 
@@ -123,8 +123,8 @@ public class ActionHandlerHelper {
                     }
                 }
             } catch (Exception e) {
-                controlActionResponse.setMsg("invalid channel uniqueId");
-                logger.error("ActionHandlerHelper get sipMeidiaServerId error, ", e);
+                amiActionResponse.setMsg("invalid channel uniqueId");
+                logger.error("ActionHelper get sipMeidiaServerId error, ", e);
                 return null;
             }
         }
