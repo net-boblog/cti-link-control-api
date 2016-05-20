@@ -1,13 +1,14 @@
 package com.tinet.ctilink.control.service.v1;
 
-import com.tinet.ctilink.control.entity.ControlActionRequest;
-import com.tinet.ctilink.control.entity.ControlActionResponse;
+
+import com.tinet.ctilink.ami.action.AmiActionResponse;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Map;
 
 /**
  * @author fengwei //
@@ -19,6 +20,6 @@ import javax.ws.rs.core.MediaType;
 public interface ControlActionService {
 
     @POST
-    ControlActionResponse handleAction(ControlActionRequest controlActionRequest);
+    AmiActionResponse handleAction(String action, Map<String, Object> params);
 
 }
