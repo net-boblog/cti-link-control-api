@@ -8,7 +8,6 @@ import com.tinet.ctilink.cache.RedisService;
 import com.tinet.ctilink.conf.model.SipGroup;
 import com.tinet.ctilink.conf.model.SipMediaServer;
 import com.tinet.ctilink.conf.model.Trunk;
-import com.tinet.ctilink.control.inc.ControlAction;
 import com.tinet.ctilink.control.entity.ControlActionResponse;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
@@ -56,11 +55,7 @@ public class ActionHandlerHelper {
             return null;
         }
         SipMediaServer sipMediaServer = null;
-        if (action.equals(ControlAction.PREVIEW_OUTCALL)
-                || action.equals(ControlAction.WEBCALL)
-                || action.equals(ControlAction.SELF_RECORD)
-                || action.equals(ControlAction.CALL_LOCAL)
-                || action.equals(ControlAction.DIRECT_CALL_START)) {  //不用区分哪个ami
+        if (false) {  //不用区分哪个ami
             Trunk trunk = redisService.get(Const.REDIS_DB_CONF_INDEX, String.format(CacheKey.TRUNK_ENTERPRISE_ID_FIRST
                     , Integer.parseInt(enterpriseId)), Trunk.class);
             if (trunk == null) {
