@@ -7,20 +7,20 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>target/generated-resources/appassembler/jsw/ctilink/bin</directory>
+			<directory>target/generated-resources/appassembler/jsw/cti-link/bin</directory>
 			<outputDirectory>/bin</outputDirectory>
 			<fileMode>0755</fileMode>
 			<excludes>
-				<exclude>ctilink.bat</exclude>
+				<exclude>cti-link.bat</exclude>
 				<exclude>windows*</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>target/generated-resources/appassembler/jsw/ctilink/etc</directory>
+			<directory>target/generated-resources/appassembler/jsw/cti-link/etc</directory>
 			<outputDirectory>/etc</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>target/generated-resources/appassembler/jsw/ctilink/lib</directory>
+			<directory>target/generated-resources/appassembler/jsw/cti-link/lib</directory>
 			<outputDirectory>/lib</outputDirectory>
 		</fileSet>
 		<fileSet>
