@@ -24,7 +24,8 @@ public class ApplicationStarter implements ApplicationListener<ContextRefreshedE
 		// http://docs.amazonaws.cn/AWSSdkDocsJava/latest/DeveloperGuide/java-dg-jvm-ttl.html
 		java.security.Security.setProperty("networkaddress.cache.ttl", "60");
 
-		System.out.println("ContextUtil.getContext = " + ContextUtil.getContext());
+		System.out.println("ContextUtil.getContext: " + ContextUtil.getContext());
+
 		logger.info("cti-link-control启动成功");
 		System.out.println("cti-link-control启动成功");
 	}
