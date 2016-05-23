@@ -21,9 +21,9 @@ public class ActionServiceImp implements ControlActionService {
     public AmiActionResponse handleAction(String action, Map<String, Object> params) {
 
         AmiActionResponse amiActionResponse = new AmiActionResponse(-1, "service unavailable");
-        AmiActionService amiActionService = ActionHelper.getService(action, params, amiActionResponse);
+        AmiActionService amiActionService = ActionHelper.getService(params, amiActionResponse);
         if (amiActionService != null) {
-            return amiActionService.handleAction(action, null);
+            return amiActionService.handleAction(action, params);
         } else {
             return amiActionResponse;
         }

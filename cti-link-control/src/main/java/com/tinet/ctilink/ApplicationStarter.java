@@ -1,5 +1,6 @@
 package com.tinet.ctilink;
 
+import com.tinet.ctilink.util.ContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -23,6 +24,7 @@ public class ApplicationStarter implements ApplicationListener<ContextRefreshedE
 		// http://docs.amazonaws.cn/AWSSdkDocsJava/latest/DeveloperGuide/java-dg-jvm-ttl.html
 		java.security.Security.setProperty("networkaddress.cache.ttl", "60");
 
+		System.out.println("ContextUtil.getContext = " + ContextUtil.getContext());
 		logger.info("cti-link-control启动成功");
 		System.out.println("cti-link-control启动成功");
 	}
