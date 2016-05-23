@@ -11,7 +11,6 @@ import com.tinet.ctilink.conf.model.SipMediaServer;
 import com.tinet.ctilink.conf.model.Trunk;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
-import com.tinet.ctilink.util.SipMediaServerUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,6 +30,7 @@ import java.util.Map;
 
 public class ActionHelper {
     private static Logger logger = LoggerFactory.getLogger(ActionHelper.class);
+    private static final String PARAM_SIP_ID = "sipId";
     private static final Map<String, ReferenceConfig<AmiActionService>> services = new HashMap<>();
     private static final ApplicationConfig application = new ApplicationConfig("cti-link-control-client");
     private static final String APPLICATION_VERSION;  //版本
@@ -49,7 +49,7 @@ public class ActionHelper {
     public static AmiActionService getService(Map<String, Object> params
             , AmiActionResponse amiActionResponse) {
         SipMediaServer sipMediaServer = null;
-        if (!params.containsKey("sipId")) {  //不用区分哪个ami
+        if (!params.containsKey(PARAM_SIP_ID)) {  //不用区分哪个ami
             String enterpriseId = params.get("enterpriseId").toString();
             if (!StringUtils.isNumeric(enterpriseId)) {
                 amiActionResponse.setMsg("invalid enterpriseId");
@@ -98,10 +98,14 @@ public class ActionHelper {
 
         } else {  //direct ip, sipId确定
             try {
+                Object obj = params.get(PARAM_SIP_ID);
+                if (obj == null || !StringUtils.isNumeric(obj.toString())) {
+                    amiActionResponse.setMsg("invalid sipId");
+                    return null;
+                }
+                Integer sipId = Integer.parseInt(obj.toString());
                 //删除
-                params.remove("sipId");
-                Integer sipId = Integer.parseInt(params.get("sipId").toString());
-
+                params.remove(PARAM_SIP_ID);
                 List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
                         , CacheKey.SIP_MEDIA_SERVER, SipMediaServer.class);
                 for (SipMediaServer server : sipMediaServerList) {
