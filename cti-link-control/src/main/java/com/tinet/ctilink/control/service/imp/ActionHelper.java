@@ -50,7 +50,8 @@ public class ActionHelper {
             , AmiActionResponse amiActionResponse) {
         SipMediaServer sipMediaServer = null;
         if (!params.containsKey(PARAM_SIP_ID)) {  //不用区分哪个ami
-            String enterpriseId = params.get("enterpriseId").toString();
+            Map<String, Object> actionEvent = (Map<String, Object>) params.get("actionEvent");
+            String enterpriseId = actionEvent.get("enterpriseId").toString();
             if (!StringUtils.isNumeric(enterpriseId)) {
                 amiActionResponse.setMsg("invalid enterpriseId");
                 return null;
