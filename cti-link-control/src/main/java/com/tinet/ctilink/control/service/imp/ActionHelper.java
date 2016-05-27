@@ -11,6 +11,7 @@ import com.tinet.ctilink.conf.model.SipMediaServer;
 import com.tinet.ctilink.conf.model.Trunk;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
+import com.tinet.ctilink.util.PropertyUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,18 +32,25 @@ import java.util.Map;
 public class ActionHelper {
     private static Logger logger = LoggerFactory.getLogger(ActionHelper.class);
     private static final String PARAM_SIP_ID = "sipId";
+    private static final String AMI_DUBBO_APPLICATION_VERSION = "ami.dubbo.application.version";
+    private static final String AMI_DUBBO_APPLICATION_TIMEOUT = "ami.dubbo.application.timeout";
+    private static final String AMI_DUBBO_PROTOCOL_PORT = "ami.dubbo.protocol.prot";
+
     private static final Map<String, ReferenceConfig<AmiActionService>> services = new HashMap<>();
     private static final ApplicationConfig application = new ApplicationConfig("cti-link-control-client");
     private static final String APPLICATION_VERSION;  //版本
     private static final int APPLICATION_TIMEOUT;  //超时时间
+    private static final String APPLICATION_PORT;
     private static RedisService redisService;
 
     static {
         redisService = ContextUtil.getBean(RedisService.class);
 
-        APPLICATION_VERSION = "0.0.1";
+        APPLICATION_VERSION = PropertyUtil.getProperty(AMI_DUBBO_APPLICATION_VERSION);
 
-        APPLICATION_TIMEOUT = 5000;
+        APPLICATION_TIMEOUT = Integer.parseInt(PropertyUtil.getProperty(AMI_DUBBO_APPLICATION_TIMEOUT));
+
+        APPLICATION_PORT = PropertyUtil.getProperty(AMI_DUBBO_PROTOCOL_PORT);
     }
 
     //查询ami
@@ -130,7 +138,7 @@ public class ActionHelper {
                 referenceConfig.setApplication(application);
                 referenceConfig.setTimeout(APPLICATION_TIMEOUT);
                 referenceConfig.setInterface(AmiActionService.class);
-                referenceConfig.setUrl("dubbo://" + sipMediaServer.getIpAddr() + "/com.tinet.ctilnk.ami.action.AmiActionService");
+                referenceConfig.setUrl("dubbo://" + sipMediaServer.getIpAddr() + ":" + APPLICATION_PORT + "/com.tinet.ctilink.ami.action.AmiActionService");
                 referenceConfig.setVersion(APPLICATION_VERSION);
                 services.put(sipMediaServer.getIpAddr(), referenceConfig);
             }
