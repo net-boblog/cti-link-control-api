@@ -23,4 +23,6 @@
 	<!-- ami -->
 	<dubbo:reference id="amiActionService" interface="com.tinet.ctilink.ami.action.AmiActionService"/>
 
+	<dubbo:reference id="amiBroadcastActionService" interface="com.tinet.ctilink.ami.action.AmiBroadcastActionService"/>
+
 </beans>
