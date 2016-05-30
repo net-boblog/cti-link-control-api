@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.tinet.ctilink.ami.action.AmiActionResponse;
 import com.tinet.ctilink.ami.action.AmiActionService;
 import com.tinet.ctilink.ami.action.AmiBroadcastActionService;
+import com.tinet.ctilink.control.entity.ControlActionRequest;
 import com.tinet.ctilink.control.inc.ControlConst;
 import com.tinet.ctilink.control.service.v1.ControlActionService;
 import org.slf4j.Logger;
@@ -47,5 +48,10 @@ public class ActionServiceImp implements ControlActionService {
         } else {
             return amiActionResponse;
         }
+    }
+
+    @Override
+    public AmiActionResponse handleAction(ControlActionRequest request) {
+        return handleAction(request.getAction(), request.getParams());
     }
 }
