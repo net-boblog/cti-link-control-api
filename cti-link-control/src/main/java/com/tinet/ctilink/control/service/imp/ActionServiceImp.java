@@ -26,27 +26,36 @@ public class ActionServiceImp implements ControlActionService {
 
     @Override
     public AmiActionResponse handleAction(String action, Map<String, Object> params) {
-        //安全验证
-        AmiActionResponse response = ActionServiceHelper.validateRequest();
-        if (response != null) {
-            return response;
-        }
-
-        //广播
-        if (params.containsKey(ControlConst.PARAM_CLUSTER)) {
-            String cluster = params.get(ControlConst.PARAM_CLUSTER) == null ? "" : params.get(ControlConst.PARAM_CLUSTER).toString();
-            if (cluster.equals(ControlConst.CLUSTER_TYPE_BROADCAST)) {
-                return amiBroadcastActionService.handleAction(action, params);
+        AmiActionResponse response = null;
+        try {
+            //安全验证
+            response = ActionServiceHelper.validateRequest();
+            if (response != null) {
+                return response;
             }
-        }
 
-        //单播, 寻址
-        AmiActionResponse amiActionResponse = new AmiActionResponse(-1, "service unavailable");
-        AmiActionService amiActionService = ActionServiceHelper.getService(params, amiActionResponse);
-        if (amiActionService != null) {
-            return amiActionService.handleAction(action, params);
-        } else {
-            return amiActionResponse;
+            //广播
+            if (params.containsKey(ControlConst.PARAM_CLUSTER)) {
+                String cluster = params.get(ControlConst.PARAM_CLUSTER) == null ? "" : params.get(ControlConst.PARAM_CLUSTER).toString();
+                if (cluster.equals(ControlConst.CLUSTER_TYPE_BROADCAST)) {
+                    response = amiBroadcastActionService.handleAction(action, params);
+                    return response;
+                }
+            }
+
+            //单播, 寻址
+            response = new AmiActionResponse(-1, "service unavailable");
+            AmiActionService amiActionService = ActionServiceHelper.getService(params, response);
+            if (amiActionService != null) {
+                response = amiActionService.handleAction(action, params);
+                return response;
+            } else {
+                return response;
+            }
+        } finally {
+            if (logger.isInfoEnabled()) {
+                logger.info("Request [action:" + action + ", params:" + params + "], Response [" + response + "]");
+            }
         }
     }
 
