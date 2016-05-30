@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.tinet.ctilink.conf.model.SystemSetting;
+import com.tinet.ctilink.inc.SystemSettingConst;
+import com.tinet.ctilink.util.AuthenticUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -147,6 +151,35 @@ public class ActionServiceHelper {
             return referenceConfig.get();
         }
 
+        return null;
+    }
+
+    public static AmiActionResponse validateRequest() {
+        //白名单控制
+        SystemSetting whiteIpSetting = redisService.get(Const.REDIS_DB_CONF_INDEX, String.format(CacheKey.SYSTEM_SETTING_NAME
+                , SystemSettingConst.SYSTEM_SETTING_NAME_CONTROL_API_WHITE_IP_LIST), SystemSetting.class);
+        if (whiteIpSetting != null) {
+            String whiteIp = whiteIpSetting.getValue();
+            if (com.alibaba.dubbo.common.utils.StringUtils.isNotEmpty(whiteIp)) {
+                String clientIp = RpcContext.getContext().getRemoteHost();
+                if (!AuthenticUtil.isInWhiteIpList(clientIp, whiteIp.split(","))) {
+                    return new AmiActionResponse(-1, "invalid client ip");
+                }
+            }
+        }
+        //查询频度配置
+        SystemSetting requestSetting = redisService.get(Const.REDIS_DB_CONF_INDEX, String.format(CacheKey.SYSTEM_SETTING_NAME
+                , SystemSettingConst.SYSTEM_SETTING_NAME_CONTROL_API_MAX_REQUEST_COUNT), SystemSetting.class);
+        //频度控制
+        if (requestSetting != null) {
+            //限制个数
+            int limit = Integer.parseInt(requestSetting.getValue());
+            //单位
+            String property = requestSetting.getProperty();
+            if (!AuthenticUtil.validateFrequency(redisService, CacheKey.CONTROL_API_REQUEST_COUNT, property, limit)) {
+                return new AmiActionResponse(-1, "request is too frequently");
+            }
+        }
         return null;
     }
 }
