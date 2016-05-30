@@ -1,5 +1,15 @@
 package com.tinet.ctilink.control.service.imp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.tinet.ctilink.ami.action.AmiActionResponse;
@@ -9,18 +19,10 @@ import com.tinet.ctilink.cache.RedisService;
 import com.tinet.ctilink.conf.model.SipGroup;
 import com.tinet.ctilink.conf.model.SipMediaServer;
 import com.tinet.ctilink.conf.model.Trunk;
+import com.tinet.ctilink.control.inc.ControlConst;
 import com.tinet.ctilink.inc.Const;
 import com.tinet.ctilink.util.ContextUtil;
 import com.tinet.ctilink.util.PropertyUtil;
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author fengwei //
@@ -31,7 +33,7 @@ import java.util.Map;
 
 public class ActionServiceHelper {
     private static Logger logger = LoggerFactory.getLogger(ActionServiceHelper.class);
-    private static final String PARAM_SIP_ID = "sipId";
+
     private static final String AMI_DUBBO_APPLICATION_VERSION = "ami.dubbo.application.version";
     private static final String AMI_DUBBO_APPLICATION_TIMEOUT = "ami.dubbo.application.timeout";
     private static final String AMI_DUBBO_PROTOCOL_PORT = "ami.dubbo.protocol.prot";
@@ -57,7 +59,7 @@ public class ActionServiceHelper {
     public static AmiActionService getService(Map<String, Object> params
             , AmiActionResponse amiActionResponse) {
         SipMediaServer sipMediaServer = null;
-        if (!params.containsKey(PARAM_SIP_ID)) {  //不用区分哪个ami
+        if (!params.containsKey(ControlConst.PARAM_SIP_ID)) {  //不用区分哪个ami
             Map<String, Object> actionEvent = (Map<String, Object>) params.get("actionEvent");
             String enterpriseId = actionEvent.get("enterpriseId").toString();
             if (!StringUtils.isNumeric(enterpriseId)) {
@@ -107,14 +109,14 @@ public class ActionServiceHelper {
 
         } else {  //direct ip, sipId确定
             try {
-                Object obj = params.get(PARAM_SIP_ID);
+                Object obj = params.get(ControlConst.PARAM_SIP_ID);
                 if (obj == null || !StringUtils.isNumeric(obj.toString())) {
                     amiActionResponse.setMsg("invalid sipId");
                     return null;
                 }
                 Integer sipId = Integer.parseInt(obj.toString());
                 //删除
-                params.remove(PARAM_SIP_ID);
+                params.remove(ControlConst.PARAM_SIP_ID);
                 List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
                         , CacheKey.SIP_MEDIA_SERVER, SipMediaServer.class);
                 for (SipMediaServer server : sipMediaServerList) {

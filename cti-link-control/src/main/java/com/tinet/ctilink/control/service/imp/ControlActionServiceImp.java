@@ -38,7 +38,7 @@ public class ControlActionServiceImp implements ControlActionService {
 
     @Override
     public AmiActionResponse handleAction(String action, Map<String, Object> params) {
-        //验证
+        //安全验证
         AmiActionResponse response = validateRequest();
         if (response != null) {
             return response;
@@ -52,7 +52,7 @@ public class ControlActionServiceImp implements ControlActionService {
             }
         }
 
-        //寻址
+        //单播, 寻址
         AmiActionResponse amiActionResponse = new AmiActionResponse(-1, "service unavailable");
         AmiActionService amiActionService = ActionServiceHelper.getService(params, amiActionResponse);
         if (amiActionService != null) {
@@ -73,7 +73,6 @@ public class ControlActionServiceImp implements ControlActionService {
                 if (!AuthenticUtil.isInWhiteIpList(clientIp, whiteIp.split(","))) {
                     return new AmiActionResponse(-1, "invalid client ip");
                 }
-
             }
         }
 
