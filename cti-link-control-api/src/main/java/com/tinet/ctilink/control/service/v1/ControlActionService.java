@@ -15,11 +15,10 @@ import java.util.Map;
  * @date 16/4/25 15:42
  */
 @Path("v1/action")
-@Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public interface ControlActionService {
 
     @POST
     AmiActionResponse handleAction(String action, Map<String, Object> params);
-
 }

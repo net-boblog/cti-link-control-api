@@ -29,8 +29,8 @@ import java.util.Map;
  * 查询AmiActionService接口
  */
 
-public class ActionHelper {
-    private static Logger logger = LoggerFactory.getLogger(ActionHelper.class);
+public class ActionServiceHelper {
+    private static Logger logger = LoggerFactory.getLogger(ActionServiceHelper.class);
     private static final String PARAM_SIP_ID = "sipId";
     private static final String AMI_DUBBO_APPLICATION_VERSION = "ami.dubbo.application.version";
     private static final String AMI_DUBBO_APPLICATION_TIMEOUT = "ami.dubbo.application.timeout";
@@ -125,7 +125,7 @@ public class ActionHelper {
                 }
             } catch (Exception e) {
                 amiActionResponse.setMsg("invalid channel uniqueId");
-                logger.error("ActionHelper get sipMeidiaServerId error, ", e);
+                logger.error("ActionServiceHelper get sipMeidiaServerId error, ", e);
                 return null;
             }
         }
