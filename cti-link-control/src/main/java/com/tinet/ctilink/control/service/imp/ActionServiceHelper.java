@@ -8,6 +8,7 @@ import java.util.Map;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.tinet.ctilink.conf.model.SystemSetting;
 import com.tinet.ctilink.inc.SystemSettingConst;
+import com.tinet.ctilink.json.JSONObject;
 import com.tinet.ctilink.util.AuthenticUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,7 @@ import com.tinet.ctilink.util.PropertyUtil;
 /**
  * @author fengwei //
  * @date 16/4/26 14:12
- *
+ * <p/>
  * 查询AmiActionService接口
  */
 
@@ -64,8 +65,8 @@ public class ActionServiceHelper {
             , AmiActionResponse amiActionResponse) {
         SipMediaServer sipMediaServer = null;
         if (!params.containsKey(ControlConst.PARAM_SIP_ID)) {  //不用区分哪个ami
-            Map<String, Object> actionEvent = (Map<String, Object>) params.get("actionEvent");
-            String enterpriseId = actionEvent.get("enterpriseId").toString();
+            JSONObject actionEvent = (JSONObject) params.get(ControlConst.PARAM_ACTION_EVENT);
+            String enterpriseId = actionEvent.get(ControlConst.PARAM_ENTERPRISE_ID).toString();
             if (!StringUtils.isNumeric(enterpriseId)) {
                 amiActionResponse.setMsg("invalid enterpriseId");
                 return null;
@@ -79,7 +80,8 @@ public class ActionServiceHelper {
             List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
                     , CacheKey.SIP_MEDIA_SERVER, SipMediaServer.class);
             int sipGroupId = trunk.getSipGroupId();
-            if (sipGroupId == -1) {  //不在任何一个group, 按照比例分配获取一个sipGroupId
+            //不在任何一个group, 按照比例分配获取一个sipGroupId
+            if (sipGroupId == -1) {
                 List<SipGroup> sipGroupList = redisService.getList(Const.REDIS_DB_CONF_INDEX, CacheKey.SIP_GROUP
                         , SipGroup.class);
                 //根据比例获取sipGroup
@@ -98,6 +100,8 @@ public class ActionServiceHelper {
                     }
                 }
             }
+
+            //确定了sipGroup, 从在sipGroup的sipMediaServerList中随机选一个sipMediaServer
             List<SipMediaServer> targetList = new ArrayList<>();
             for (SipMediaServer server : sipMediaServerList) {
                 if (server.getGroupId().equals(sipGroupId)) {
@@ -119,7 +123,7 @@ public class ActionServiceHelper {
                     return null;
                 }
                 Integer sipId = Integer.parseInt(obj.toString());
-                //删除
+                //处理完成, 删除sipId
                 params.remove(ControlConst.PARAM_SIP_ID);
                 List<SipMediaServer> sipMediaServerList = redisService.getList(Const.REDIS_DB_CONF_INDEX
                         , CacheKey.SIP_MEDIA_SERVER, SipMediaServer.class);
