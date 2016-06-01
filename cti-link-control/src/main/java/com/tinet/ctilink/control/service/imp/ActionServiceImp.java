@@ -11,6 +11,7 @@ import com.tinet.ctilink.control.service.v1.ControlActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -26,6 +27,7 @@ public class ActionServiceImp implements ControlActionService {
 
     @Override
     public AmiActionResponse handleAction(String action, Map<String, Object> params) {
+        Date startTime = new Date();
         AmiActionResponse response = null;
         try {
             //安全验证
@@ -53,8 +55,10 @@ public class ActionServiceImp implements ControlActionService {
                 return response;
             }
         } finally {
+            Date endTime = new Date();
             if (logger.isInfoEnabled()) {
-                logger.info("Request [action:" + action + ", params:" + params + "], Response [" + response + "]");
+                logger.info("Request [action:" + action + ", params:" + params + "], Response [" + response + "]" +
+                        ", Time [start:" + startTime.getTime() + ", end:" + endTime.getTime() + ", " + (endTime.getTime() - startTime.getTime()) + "ms]");
             }
         }
     }
