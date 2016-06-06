@@ -50,10 +50,8 @@ public class ActionServiceImp implements ControlActionService {
             AmiActionService amiActionService = ActionServiceHelper.getService(params, response);
             if (amiActionService != null) {
                 response = amiActionService.handleAction(action, params);
-                return response;
-            } else {
-                return response;
             }
+            return response;
         } finally {
             Date endTime = new Date();
             if (logger.isInfoEnabled()) {

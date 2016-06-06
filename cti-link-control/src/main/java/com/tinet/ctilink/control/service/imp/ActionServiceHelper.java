@@ -118,6 +118,9 @@ public class ActionServiceHelper {
         } else {  //direct ip, sipId确定
             try {
                 Object obj = params.get(ControlConst.PARAM_SIP_ID);
+                if (logger.isInfoEnabled()) {
+                    logger.info("sipId : " + obj);
+                }
                 if (obj == null || !StringUtils.isNumeric(obj.toString())) {
                     amiActionResponse.setMsg("invalid sipId");
                     return null;
